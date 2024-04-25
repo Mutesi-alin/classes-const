@@ -1,48 +1,87 @@
+
+
+
+
+//Q1
 class Car {
     constructor(make, model, year) {
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.isAvailable = true; 
+      this.make = make;
+      this.model = model;
+      this.year = year;
+      this.isAvailable = true;
     }
-
-    Availabilityofcar() {
-        this.isAvailable = !this.isAvailable; 
+    toggleAvailability() {
+      this.isAvailable = !this.isAvailable;
     }
-}
-
-
-const myCar = new Car("Toyota", "Camry", 2020);
-console.log(myCar); 
-myCar.Availabilityofcar();
-console.log(myCar); 
-//2
-
-
-    
-
-
-
-class Rental {
+  }
+  class Rental {
     constructor(car, renterName, rentalStartDate, rentalEndDate) {
-        this.car = car; 
-        this.renterName = renterName; 
-        this.rentalStartDate = rentalStartDate;
-        this.rentalEndDate = rentalEndDate; 
+      this.car = car;
+      this.renterName = renterName;
+      this.rentalStartDate = new Date(rentalStartDate);
+      this.rentalEndDate = new Date(rentalEndDate);
     }
-
-    
     calculateRentalDuration() {
-        const start = this.rentalStartDate.getTime();
-        const end = this.rentalEndDate.getTime();
-        const durationInMilliseconds = end - start;
-        const durationInDays = durationInMilliseconds / (1000 * 60 * 60 * 24);
-        return Math.floor(durationInDays); 
+      const oneDay = 24 * 60 * 60 * 1000;
+      const diffDays = Math.round(Math.abs((this.rentalEndDate - this.rentalStartDate) / oneDay));
+      return diffDays;
+    }
+  }
+  let myCar = new Car("Toyota", "Camry", 2020);
+  let myRental = new Rental(myCar, "John Doe", "2024-04-01", "2024-04-10");
+  let rentalDuration = myRental.calculateRentalDuration();
+  console.log(`The rental duration is ${rentalDuration} days.`);
+
+  //q2
+  
+  class Question {
+    constructor(text, options, correctAnswer) {
+        this.text = text;
+        this.options = options;
+        this.correctAnswer = correctAnswer;
+    }
+    checkAnswer(userAnswer) {
+        return userAnswer === this.correctAnswer;
     }
 }
+const sampleQuestion = new Question(
+    "What is the capital of France?",
+    ["Paris", "London", "Berlin", "Madrid"],
+    
+);
+console.log(sampleQuestion.checkAnswer("Paris"));
+console.log(sampleQuestion.checkAnswer("London"));
+class Quiz {
+    constructor() {
+        this.questions = [];
+        this.currentQuestionIndex = 0;
+        this.score = 0;
+    }
+    addQuestion(question) {
+        this.questions.push(question);
+    }
+    nextQuestion() {
+        this.currentQuestionIndex++;
+    }
+    submitAnswer(userAnswer) {
+        const currentQuestion = this.questions[this.currentQuestionIndex];
+        if (currentQuestion.checkAnswer(userAnswer)) {
+            this.score++;
+        }
+        this.nextQuestion();
+    }
+}
+const quiz = new Quiz();
+const question1 = new Question("What is 2 + 2?", ["3", "4", "5"], "4");
+const question2 = new Question("Who wrote 'Born'?", ["Shakespeare", "Hemingway", "Tolstoy"], "Shakespeare");
+quiz.addQuestion(question1);
+quiz.addQuestion(question2);
+quiz.submitAnswer("4");
+quiz.submitAnswer("Shakespeare");
+console.log("Score:", quiz.score);
 
 
-const car1 = new Car('Toyota', 'Camry', 2022);
-const rental1 = new Rental(car1, 'John Doe', new Date('2024-04-20'), new Date('2024-04-25'));
 
-console.log(rental1.calculateRentalDuration());
+
+
+
